@@ -13,8 +13,17 @@ with open("iab.json", "r") as f:
 
 
 def oui_lookup(mac_addr):
-    oui = mac_addr.replace(":", "").replace("-", "")[:6].upper()
-    iab = mac_addr.replace(":", "").replace("-", "")[:9].upper()
+
+    mac_addr = mac_addr.replace(":", "").replace("-", "").upper()
+
+    if mac_addr == "FFFFFFFFFFFF":
+        return "Broadcast"
+
+    oui = mac_addr[:6]
+    iab = mac_addr[:9]
+
+    #oui = mac_addr.replace(":", "").replace("-", "")[:6].upper()
+    #iab = mac_addr.replace(":", "").replace("-", "")[:9].upper()
 
     if oui in oui_map:
         return oui_map[oui]
