@@ -23,11 +23,29 @@ def callback(pkt):
     ether = pkt[Ether]
 
     def print_header():
-        print("|  0x%x 0x%x %d %d" % (
-            arp.hwtype,
-            arp.ptype,
-            arp.hwlen,
-            arp.plen
+        header_str = {
+                "hwtype": "0x%x" % (arp.hwtype,),
+                "ptype":  "0x%x" % (arp.ptype,),
+                "hwlen":  "%d" % (arp.hwlen,),
+                "plen":   "%d" % (arp.plen,),
+                }
+
+        default = {
+                "hwtype": 0x1,
+                "ptype":  0x800,
+                "hwlen":  6,      # MAC Addr len
+                "plen":   4       # IPv4 Addr len
+                }
+
+        for k, v in default.items():
+            if getattr(arp, k) != v:
+                header_str[k] = colors["red"] + header_str[k] + colors["reset"]
+
+        print("|   hw:%s p:%s hwl:%s pl:%s" % (
+            header_str["hwtype"],
+            header_str["ptype"],
+            header_str["hwlen"],
+            header_str["plen"]
             ))
 
 
